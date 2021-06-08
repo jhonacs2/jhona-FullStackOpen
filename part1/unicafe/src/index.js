@@ -8,9 +8,15 @@ const Button = ({handleClick,text}) => (
 const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad
   const prom = ((good + bad ) / 3 )
-  
   const percentage = (good * 100) / total
   
+  if((good || neutral || bad) == 0 ){
+    return(
+      <>
+      <h3>No feedback given</h3>
+      </>
+    )
+  }
   
   return (
     <>
