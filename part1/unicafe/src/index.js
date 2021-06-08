@@ -5,9 +5,9 @@ const Button = ({handleClick,text}) => (
   <button onClick={handleClick}>{text}</button>
 )
 
-const InfoCafe = ({good, neutral, bad}) => {
+const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad
-  const prom = ((good + bad ) / 2 )
+  const prom = ((good + bad ) / 3 )
   
   const percentage = (good * 100) / total
   
@@ -47,7 +47,7 @@ const App = () => {
       <p>neutral {neutral}</p>
       <p>Bad {bad}</p>
 
-      <InfoCafe good = {good} neutral = {neutral} bad = {bad} />
+      <Statistics good = {good} neutral = {neutral} bad = {bad} />
     </div>
   )
 }
