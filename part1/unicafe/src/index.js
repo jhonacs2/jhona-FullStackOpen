@@ -9,8 +9,10 @@ const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad
   const prom = ((good + bad ) / 3 )
   const percentage = (good * 100) / total
+
   
-  if((good || neutral || bad) == 0 ){
+  
+  if((good || neutral || bad) === 0 ){
     return(
       <>
       <h3>No feedback given</h3>
@@ -19,11 +21,32 @@ const Statistics = ({good, neutral, bad}) => {
   }
   
   return (
-    <>
-      <p>all {total}</p>
-      <p>average {prom}</p>
-      <p>positive {percentage} %</p>
-    </>
+    
+      <table  >
+        <tbody>
+      <tr >
+        <td style={{border: "1px solid #000"}}>Good</td>
+        <td style={{border: "1px solid #000"}}>{good}</td>
+      </tr>
+      <tr>
+        <td style={{border: "1px solid #000"}}>neutral</td>
+        <td style={{border: "1px solid #000"}}>{neutral}</td>
+      </tr>
+      <tr>
+        <td style={{border: "1px solid #000"}}>Bad</td>
+        <td style={{border: "1px solid #000"}}>{bad}</td>
+      </tr>
+      <tr>
+        <td style={{border: "1px solid #000"}}>average</td>
+        <td style={{border: "1px solid #000"}}>{prom}</td>
+      </tr>
+      <tr>
+        <td style={{border: "1px solid #000"}}>positive</td>
+        <td style={{border: "1px solid #000"}}>{percentage}</td>
+      </tr>
+      </tbody>
+    </table>
+    
   )
 }
 
