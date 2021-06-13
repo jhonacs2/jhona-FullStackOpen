@@ -10,9 +10,9 @@ const Part = ({ parts }) => {
       ))}
       <p>
         Total of{" "}
-        {parts.reduce((s, p) => {
+        <strong>{parts.reduce((s, p) => {
           return s + p.exercises;
-        }, 0)}{" "}
+        }, 0)}{" "}</strong>
         exercises
       </p>
     </>

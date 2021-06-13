@@ -1,14 +1,18 @@
-import React from 'react'
-import Part from './Part'
+import React from "react";
+import Header from "./Header";
 
-const Course = ({course}) => {
-    
-    return (
-        <div>
-            <h1>{course.name}</h1>
-            <Part parts = {course.parts}/>
-        </div>
-    )
-}
+const Course = ({ courses }) => {
+  
+  return (
+    <div>
+      {courses.map((course,index) => {
+        return <Header key = {index} course = {course}/>
+      })}
 
-export default Course
+      {/* <h1>{course.name}</h1>
+            <Part parts = {course.parts}/> */}
+    </div>
+  );
+};
+
+export default Course;
