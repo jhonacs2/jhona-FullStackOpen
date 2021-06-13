@@ -15,6 +15,13 @@ const App = () => {
     const newContact = {
       name: newName
     }
+    const sameName = persons.map (person => person.name)
+    const conditionalName = sameName.includes(newName)
+    
+    if(conditionalName){
+      return alert(`el nombre ${newName} ya existe`)
+    }
+
     setPersons(persons.concat(newContact))
   }
 
