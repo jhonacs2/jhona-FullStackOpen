@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 
@@ -12,11 +13,6 @@ const App = () => {
   const [newName, setnewName] = useState("");
   const [number, setNumber] = useState(0);
   const [filterName, setFilterName] = useState("")
-  
-  const filterInput = (e) => {
-    setFilterName(e.target.value)
-  }
-
   const filterToShow = (filterName === "") 
   ? persons 
   : persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase()))
@@ -26,9 +22,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      {filterName}
       <br />
-      Filter Shown with: <input value={filterName}  onChange = {filterInput} />
+      <Filter filterName ={filterName} setFilterName = {setFilterName}/>
+      {/* Filter Shown with: <input value={filterName}  onChange = {filterInput} /> */}
       
       <h3>Add a new</h3>
       <PersonForm 
