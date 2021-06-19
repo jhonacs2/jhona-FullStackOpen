@@ -1,4 +1,5 @@
 import React from "react";
+import contactService from "../services/contacts";
 
 const PersonForm = ({
   setnewName,
@@ -21,17 +22,18 @@ const PersonForm = ({
       name: newName,
       number: number,
     };
-
     const sameName = persons.map((person) => person.name);
+   
     const conditionalName = sameName.includes(newName);
-
     if (conditionalName) {
       return alert(`el nombre ${newName} ya existe`);
     }
-    
-    setPersons(persons.concat(newContact));
-    setnewName("");
-    setNumber(0);
+    contactService.create(newContact)
+    .then( contact => {
+      setPersons(persons.concat(contact))
+      setnewName("");
+      setNumber(0);
+    })
   };
   return (
     <form onSubmit={addNumber}>
