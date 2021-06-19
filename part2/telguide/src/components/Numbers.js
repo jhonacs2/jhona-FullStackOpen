@@ -4,8 +4,8 @@ const Numbers = ({ person, deletePerson }) => {
     
     return(
         <>
-        <p>{person.name} {person.number} </p>
-        <button onClick={deletePerson}>Delete</button>
+        <p>{person.name} {person.number} <button onClick={deletePerson}>Delete</button></p>
+        
         </>
         
     )
