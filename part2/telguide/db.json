@@ -2,28 +2,13 @@
   "persons": [
     {
       "name": "asd",
-      "number": 213123,
+      "number": 0,
       "id": 12
     },
     {
-      "name": "cc",
-      "number": 56756711,
-      "id": 13
-    },
-    {
-      "name": "aa",
-      "number": 0,
-      "id": 14
-    },
-    {
-      "name": "bb",
-      "number": "123",
-      "id": 15
-    },
-    {
       "name": "a",
-      "number": 4,
-      "id": 16
+      "number": 0,
+      "id": 13
     }
   ]
 }

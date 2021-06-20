@@ -8,6 +8,7 @@ const PersonForm = ({
   setNumber,
   setPersons,
   persons,
+  setNotification,
 }) => {
   const handleNameChange = (e) => {
     setnewName(e.target.value);
@@ -24,13 +25,12 @@ const PersonForm = ({
     };
     const sameName = persons.map((person) => person.name);
     const conditionalName = sameName.includes(newName);
-
+    const [contact] = persons.filter((person) => person.name === newName);
     if (conditionalName) {
       const changueTF = window.confirm(
         `User is already added to phonebook, do you want replace it`
       );
       if (changueTF) {
-        const [contact] = persons.filter((person) => person.name === newName);
         const changueContact = { ...contact, number: parseInt(number) };
         contactService
           .updateContact(contact.id, changueContact)
@@ -48,6 +48,11 @@ const PersonForm = ({
         setnewName("");
         setNumber(0);
       });
+      setNotification(newContact.name);
+
+      setTimeout(() => {
+        setNotification(null);
+      }, 4000);
     }
   };
   return (

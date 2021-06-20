@@ -19,7 +19,7 @@ const updateContact = (id, newContact) => {
 
 const deleteContact = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`);
-  return request.then((response) => console.log(response));
+  return request.then((response) => response);
 };
 
 export default {
