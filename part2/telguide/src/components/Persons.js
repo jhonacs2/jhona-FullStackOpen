@@ -8,8 +8,16 @@ const Person = ({ persons, setPersons, setNotification }) => {
     if (result) {
       contactService
         .deleteContact(id)
-        .then((r) =>
+        .then((r) =>{
           setPersons(persons.filter((person) => person.id !== id && person))
+          setNotification(`${name} delete`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 4000)
+        }
+  
+          
+          
         )
         .catch((error) => {
           setNotification(`${name} was already delete from server`)

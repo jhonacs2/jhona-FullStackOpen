@@ -21,7 +21,7 @@ const PersonForm = ({
     e.preventDefault();
     const newContact = {
       name: newName,
-      number: number,
+      number: number.toString(),
     };
     const sameName = persons.map((person) => person.name);
     const conditionalName = sameName.includes(newName);
@@ -31,7 +31,7 @@ const PersonForm = ({
         `User is already added to phonebook, do you want replace it`
       );
       if (changueTF) {
-        const changueContact = { ...contact, number: parseInt(number) };
+        const changueContact = { ...contact, number: number};
         contactService
           .updateContact(contact.id, changueContact)
           .then((returnContact) => {
@@ -40,15 +40,27 @@ const PersonForm = ({
                 person.id === contact.id ? returnContact : person
               )
             );
+          })
+          .catch(error => {
+            const alert = error.response.data
+        setNotification(`${alert.error}`);
           });
       }
     } else {
-      contactService.create(newContact).then((contact) => {
+      contactService
+      .create(newContact)
+      .then((contact) => {
         setPersons(persons.concat(contact));
         setnewName("");
         setNumber(0);
-      });
-      setNotification(newContact.name);
+        setNotification(`${newContact.name} was added to phonebook`);
+      })
+      .catch(error => {
+        const alert = error.response.data
+        setNotification(`${alert.error}`);
+      })
+      ;
+      
 
       setTimeout(() => {
         setNotification(null);
@@ -61,7 +73,7 @@ const PersonForm = ({
         Name: <input value={newName} onChange={handleNameChange} />
         <br />
         Number:{" "}
-        <input value={number} onChange={handleNumberChange} type="number" />
+        <input value={number} onChange={handleNumberChange} type="text" />
       </div>
       <div>
         <button type="submit">Add</button>
