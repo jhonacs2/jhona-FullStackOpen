@@ -8,23 +8,19 @@ const Person = ({ persons, setPersons, setNotification }) => {
     if (result) {
       contactService
         .deleteContact(id)
-        .then((r) =>{
-          setPersons(persons.filter((person) => person.id !== id && person))
-          setNotification(`${name} delete`)
+        .then((r) => {
+          setPersons(persons.filter((person) => person.id !== id && person));
+          setNotification(`${name} delete`);
           setTimeout(() => {
-            setNotification(null)
-          }, 4000)
-        }
-  
-          
-          
-        )
+            setNotification(null);
+          }, 4000);
+        })
         .catch((error) => {
-          setNotification(`${name} was already delete from server`)
+          setNotification(`${name} was already delete from server`);
           setTimeout(() => {
-            setNotification(null)
-          }, 4000)
-          setPersons(persons.filter(person => person.id !== id)  )
+            setNotification(null);
+          }, 4000);
+          setPersons(persons.filter((person) => person.id !== id));
         });
       // setPersons(persons.filter((person) => person.id !== id && person ));
     }
