@@ -14,7 +14,7 @@ blogRouter.get("/:id",async(request,response) => {
     response.status(404).end()
   }
 })
-
+//add blog to the mongoBD
 blogRouter.post("/", async (request, response) => {
   const body = request.body;
   const blog = new Blog({
