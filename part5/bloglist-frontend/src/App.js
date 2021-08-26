@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import { LoginForm } from "./components/LoginForm";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
 import { CreateForm } from "./components/CreateForm";
 import { Notification } from "./components/Notification";
-const initialState = {
-  title: "",
-  author: "",
-  url: "",
-};
+import { Toggable } from "./components/Toggable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -17,8 +13,10 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [blogForm, setBlogForm] = useState(initialState);
+
   const [notificationMsg, setNotificationMsg] = useState(null);
+
+  const createFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -49,7 +47,6 @@ const App = () => {
       setPassword("");
       setNotificationMsg("Welcome");
     } catch (error) {
-      
       setNotificationMsg("username or password incorrect");
     }
     setTimeout(() => {
@@ -57,24 +54,12 @@ const App = () => {
     }, 5000);
   };
 
-  const handleInputChange = (e) => {
-    setBlogForm({
-      ...blogForm,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const addBlog = (e) => {
-    e.preventDefault();
-    const newBlog = {
-      title: blogForm.title,
-      author: blogForm.author,
-      url: blogForm.url,
-    };
+  const addBlog = (newBlog) => {
+    createFormRef.current.toggleVisibility();
     blogService.createBlog(newBlog).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
       setNotificationMsg(`The Blog ${returnedBlog.title} has been added `);
-      setBlogForm(initialState);
+
       setTimeout(() => {
         setNotificationMsg(null);
       }, 5000);
@@ -86,13 +71,15 @@ const App = () => {
       <div>
         <h2>Log in to application</h2>
         <Notification message={notificationMsg} />
-        <LoginForm
-          username={username}
-          password={password}
-          setUserName={setUserName}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        />
+        <Toggable buttonLabel="Login">
+          <LoginForm
+            username={username}
+            password={password}
+            setUserName={setUserName}
+            setPassword={setPassword}
+            handleLogin={handleLogin}
+          />
+        </Toggable>
       </div>
     );
   }
@@ -101,11 +88,9 @@ const App = () => {
     <div>
       {user && <h1>Welcome {user.name}</h1>}
       <Notification message={notificationMsg} />
-      <CreateForm
-        handleInputChange={handleInputChange}
-        addBlog={addBlog}
-        blogForm={blogForm}
-      />
+      <Toggable buttonLabel="Create new blog" ref={createFormRef}>
+        <CreateForm addBlog={addBlog} />
+      </Toggable>
       <h2>Blogs</h2>
       create
       {blogs.map((blog) => (
