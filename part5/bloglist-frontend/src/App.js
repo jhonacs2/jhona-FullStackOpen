@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
+import { Blog } from "./components/Blog";
 import { LoginForm } from "./components/LoginForm";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -18,6 +18,9 @@ const App = () => {
 
   const createFormRef = useRef();
 
+  const highToLower = blogs.sort((a, b) => {
+    return b.likes - a.likes;
+  });
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
@@ -66,6 +69,20 @@ const App = () => {
     });
   };
 
+  const updateLike = (id, newLike) => {
+    blogService.likeBlog(id, { likes: newLike }).then((blogReturned) => {
+      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : blogReturned)));
+    });
+  };
+
+  const userDeleteBlog = (id) => {
+    blogService
+      .deleteBlog(id)
+      .then(returnedBlog => {
+        setBlogs(blogs.filter(blog => blog.id !== id ))
+      });
+  };
+
   if (user === null) {
     return (
       <div>
@@ -93,8 +110,13 @@ const App = () => {
       </Toggable>
       <h2>Blogs</h2>
       create
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+      {highToLower.map((blog) => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          updateLike={updateLike}
+          userDeleteBlog={userDeleteBlog}
+        />
       ))}
     </div>
   );

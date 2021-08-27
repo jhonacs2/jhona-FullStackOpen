@@ -17,8 +17,21 @@ const createBlog = (newBlog) => {
   };
 
   const request = axios.post(baseUrl, newBlog, config);
-  console.log(request)
+  console.log(request);
   return request.then((response) => response.data);
 };
 
-export default { getAll, setToken, createBlog };
+const likeBlog = (id, newLike) => {
+  const request = axios.put(`${baseUrl}/${id}`, newLike);
+  return request.then((response) => response.data);
+};
+
+const deleteBlog = (id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const request = axios.delete(`${baseUrl}/${id}`, config);
+  return request.then((response) => response.data)
+};
+
+export default { getAll, setToken, createBlog, likeBlog, deleteBlog };
