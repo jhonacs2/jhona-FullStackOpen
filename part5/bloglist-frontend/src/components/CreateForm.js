@@ -1,32 +1,32 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 const initialState = {
-  title: "",
-  author: "",
-  url: "",
-};
+  title: '',
+  author: '',
+  url: '',
+}
 
 export const CreateForm = ({ addBlog }) => {
-  const [blogForm, setBlogForm] = useState(initialState);
+  const [blogForm, setBlogForm] = useState(initialState)
   const handleInputChange = (e) => {
     setBlogForm({
       ...blogForm,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   const newBlog = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     addBlog({
       title: blogForm.title,
       author: blogForm.author,
       url: blogForm.url,
-    });
+    })
     setBlogForm(initialState)
-  };
+  }
 
   return (
     <div>
-      {" "}
+      {' '}
       <form className="row" onSubmit={newBlog}>
         <div className="col-md-3">
           <input
@@ -63,5 +63,5 @@ export const CreateForm = ({ addBlog }) => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}

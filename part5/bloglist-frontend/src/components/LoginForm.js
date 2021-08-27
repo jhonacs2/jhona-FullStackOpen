@@ -1,4 +1,5 @@
-import React from "react";
+
+import React from 'react'
 
 export const LoginForm = ({
   handleLogin,
@@ -29,5 +30,6 @@ export const LoginForm = ({
       </div>
       <button type="submit">login</button>
     </form>
-  );
-};
+  )
+}
+
