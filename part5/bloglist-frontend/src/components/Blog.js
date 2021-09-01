@@ -30,17 +30,17 @@ export const Blog = ({ blog, updateLike, userDeleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='ClassBlog' style={blogStyle}>
       <div>
         <h2 style={{ display: 'inline-block', padding: '15px' }}>
           {blog.title}
           <span> by {blog.author}</span>{' '}
         </h2>
-        <button type="submit" onClick={toggleVisibility}>
+        <button type='submit' onClick={toggleVisibility}>
           Show Details{' '}
         </button>
       </div>
-      <div style={showWhenVisible}>
+      <div className='Links' style={showWhenVisible}>
         <p>Link: {blog.url}</p>
         <p>Likes: {blog.likes}</p>
         <button onClick={newLike}>Like </button>
@@ -51,7 +51,7 @@ export const Blog = ({ blog, updateLike, userDeleteBlog }) => {
 }
 
 Blog.propTypes = {
-  blog:PropTypes.object.isRequired,
+  blog: PropTypes.object.isRequired,
   updateLike: PropTypes.func.isRequired,
-  userDeleteBlog:PropTypes.func.isRequired
+  userDeleteBlog: PropTypes.func.isRequired,
 }

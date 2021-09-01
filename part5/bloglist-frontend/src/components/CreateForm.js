@@ -27,38 +27,39 @@ export const CreateForm = ({ addBlog }) => {
   return (
     <div>
       {' '}
-      <form className="row" onSubmit={newBlog}>
-        <div className="col-md-3">
+      <form className='row' onSubmit={newBlog}>
+        <div className='col-md-3'>
           <input
-            type="text"
+            id='title'
+            type='text'
             value={blogForm.title}
-            placeholder="Title"
-            className="form-control"
+            placeholder='Title'
+            className='form-control'
             onChange={handleInputChange}
-            name="title"
+            name='title'
           ></input>
         </div>
-        <div className="col-md-3">
+        <div className='col-md-3'>
           <input
-            type="text"
+            type='text'
             value={blogForm.author}
-            placeholder="Author"
-            className="form-control"
+            placeholder='Author'
+            className='form-control'
             onChange={handleInputChange}
-            name="author"
+            name='author'
           ></input>
         </div>
-        <div className="col-md-3">
+        <div className='col-md-3'>
           <input
-            type="text"
+            type='text'
             value={blogForm.url}
-            placeholder="Url"
-            className="form-control"
+            placeholder='Url'
+            className='form-control'
             onChange={handleInputChange}
-            name="url"
+            name='url'
           ></input>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type='submit' className='btn btn-primary'>
           Enviar
         </button>
       </form>
