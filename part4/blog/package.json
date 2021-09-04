@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "start:test": "NODE_ENV=test nodemon index.js",
     "test": "jest --verbose"
   },
   "author": "Jhonatan Soto",
@@ -22,7 +23,7 @@
   },
   "devDependencies": {
     "jest": "^27.0.6",
-    "nodemon": "^2.0.9",
+    "nodemon": "^2.0.12",
     "supertest": "^6.1.4"
   },
   "jest": {

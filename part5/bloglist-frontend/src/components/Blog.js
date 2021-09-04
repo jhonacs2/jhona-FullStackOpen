@@ -1,24 +1,24 @@
-import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 export const Blog = ({ blog, updateLike, userDeleteBlog }) => {
-  const [details, setDetails] = useState(false)
+  const [details, setDetails] = useState(false);
 
-  const showWhenVisible = { display: details ? '' : 'none' }
+  const showWhenVisible = { display: details ? '' : 'none' };
 
   const newLike = (e) => {
-    e.preventDefault()
-    const numberLikes = blog.likes + 1
-    updateLike(blog.id, numberLikes)
-  }
+    e.preventDefault();
+    const numberLikes = blog.likes + 1;
+    updateLike(blog.id, numberLikes);
+  };
 
   const deleteBlog = () => {
-    userDeleteBlog(blog.id)
-  }
+    userDeleteBlog(blog.id);
+  };
 
   const toggleVisibility = () => {
-    setDetails(!details)
-  }
+    setDetails(!details);
+  };
 
   const blogStyle = {
     maxWidth: '500px',
@@ -27,7 +27,7 @@ export const Blog = ({ blog, updateLike, userDeleteBlog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  }
+  };
 
   return (
     <div className='ClassBlog' style={blogStyle}>
@@ -42,16 +42,20 @@ export const Blog = ({ blog, updateLike, userDeleteBlog }) => {
       </div>
       <div className='Links' style={showWhenVisible}>
         <p>Link: {blog.url}</p>
-        <p>Likes: {blog.likes}</p>
-        <button onClick={newLike}>Like </button>
+        <p>
+          Likes: <span>{blog.likes}</span>
+        </p>
+        <button onClick={newLike} id='buttonLike'>
+          Like{' '}
+        </button>
         <button onClick={deleteBlog}>Delete </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   updateLike: PropTypes.func.isRequired,
   userDeleteBlog: PropTypes.func.isRequired,
-}
+};

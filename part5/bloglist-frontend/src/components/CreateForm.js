@@ -1,28 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 const initialState = {
   title: '',
   author: '',
   url: '',
-}
+};
 
 export const CreateForm = ({ addBlog }) => {
-  const [blogForm, setBlogForm] = useState(initialState)
+  const [blogForm, setBlogForm] = useState(initialState);
   const handleInputChange = (e) => {
     setBlogForm({
       ...blogForm,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const newBlog = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     addBlog({
       title: blogForm.title,
       author: blogForm.author,
       url: blogForm.url,
-    })
-    setBlogForm(initialState)
-  }
+    });
+    setBlogForm(initialState);
+  };
 
   return (
     <div>
@@ -41,6 +41,7 @@ export const CreateForm = ({ addBlog }) => {
         </div>
         <div className='col-md-3'>
           <input
+            id='author'
             type='text'
             value={blogForm.author}
             placeholder='Author'
@@ -51,6 +52,7 @@ export const CreateForm = ({ addBlog }) => {
         </div>
         <div className='col-md-3'>
           <input
+            id='url'
             type='text'
             value={blogForm.url}
             placeholder='Url'
@@ -59,10 +61,10 @@ export const CreateForm = ({ addBlog }) => {
             name='url'
           ></input>
         </div>
-        <button type='submit' className='btn btn-primary'>
+        <button type='submit' className='btn btn-primary' id='sentForm'>
           Enviar
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
