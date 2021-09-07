@@ -41,5 +41,21 @@ describe('Blog App', function () {
       cy.get('#buttonLike').click();
       cy.contains(1);
     });
+
+    it.only('a blog ca be liked', function () {
+      cy.contains('Login').click();
+      cy.get('#username').type('jhonacs');
+      cy.get('#password').type('1234');
+      cy.contains('login').click();
+
+      cy.get('#title').type('The adventures of pendejo');
+      cy.get('#author').type('Fin y Jack');
+      cy.get('#url').type('www.tap.com');
+
+      cy.get('#sentForm').click();
+      cy.contains('Show Details').click();
+      cy.contains('Delete').click();
+      cy.contains('The adventures of pendejo').should('not.exist');
+    });
   });
 });
