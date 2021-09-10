@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM, { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 
 const Display = ({ points, anecdotes }) => {
   const max = Math.max(...points);
