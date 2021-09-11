@@ -15,11 +15,26 @@ const Anecdote = ({ anecdote, vote }) => {
 };
 
 export const AnecdoteList = () => {
-  const anecdotes = useSelector((state) =>
-    state.sort((a, b) => {
-      return b.votes - a.votes;
-    })
-  );
+  // const anecdotesRedux = useSelector(({ anecdotes,filter }) =>
+  //   anecdotes.sort((a, b) => {
+  //     return b.votes - a.votes;
+  //   })
+  // );
+
+  const anecdotesRedux = useSelector(({ anecdotes, filter }) => {
+    if (filter === '') {
+      return anecdotes.sort((a, b) => {
+        return b.votes - a.votes;
+      });
+    } else {
+      const filterAnecdotes = anecdotes.filter((anecdote) =>
+        anecdote.content.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      return filterAnecdotes.sort((a, b) => b.votes - a.votes);
+    }
+  });
+
   const dispatch = useDispatch();
 
   const vote = (id) => {
@@ -27,8 +42,12 @@ export const AnecdoteList = () => {
   };
   return (
     <ul>
-      {anecdotes.map((anecdote) => (
-        <Anecdote anecdote={anecdote} vote={() => vote(anecdote.id)} />
+      {anecdotesRedux.map((anecdote) => (
+        <Anecdote
+          key={anecdote.id}
+          anecdote={anecdote}
+          vote={() => vote(anecdote.id)}
+        />
       ))}
     </ul>
   );
