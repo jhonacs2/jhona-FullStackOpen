@@ -37,8 +37,8 @@ export const AnecdoteList = () => {
 
   const dispatch = useDispatch();
 
-  const vote = (id) => {
-    dispatch(voteAnecdote(id));
+  const vote = (anecdote) => {
+    dispatch(voteAnecdote(anecdote));
   };
   return (
     <ul>
@@ -46,7 +46,7 @@ export const AnecdoteList = () => {
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
-          vote={() => vote(anecdote.id)}
+          vote={() => vote(anecdote)}
         />
       ))}
     </ul>

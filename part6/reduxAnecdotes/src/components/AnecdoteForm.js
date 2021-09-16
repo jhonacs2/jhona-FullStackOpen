@@ -1,11 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
-import {
-  hideNotification,
-  setNotification,
-} from '../reducers/notificationReducer';
-import AnecdoteServices from '../services/anecdotes';
+import { setNotification } from '../reducers/notificationReducer';
 
 export const AnecdoteForm = (props) => {
   const dispatch = useDispatch();
@@ -14,14 +10,10 @@ export const AnecdoteForm = (props) => {
     event.preventDefault();
     const content = event.target.anecdote.value;
     event.target.anecdote.value = '';
-    const newAnecdote = await AnecdoteServices.createAnecdote(content);
-    console.log(newAnecdote);
-    dispatch(createAnecdote(newAnecdote));
-    dispatch(setNotification(content));
+    // const newAnecdote = await AnecdoteServices.createAnecdote(content);
 
-    setTimeout(() => {
-      dispatch(hideNotification());
-    }, 5000);
+    dispatch(createAnecdote(content));
+    dispatch(setNotification(`you voted ${content}`, 5));
   };
   return (
     <div>

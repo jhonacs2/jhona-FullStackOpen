@@ -6,7 +6,6 @@ export const FilterAnecdote = () => {
   const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
   const handleChange = (event) => {
-    console.log(event.target.value);
     const content = event.target.value;
     dispatch(setInput(content));
   };

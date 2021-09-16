@@ -11,10 +11,15 @@ const notiReducer = (state = '', action) => {
   }
 };
 
-export const setNotification = (notification) => {
-  return {
-    type: 'ADD_NOTI',
-    notification,
+export const setNotification = (notification, time) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'ADD_NOTI',
+      notification,
+    });
+    setTimeout(() => {
+      dispatch(hideNotification());
+    }, time * 1000);
   };
 };
 

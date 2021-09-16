@@ -13,4 +13,12 @@ const createAnecdote = async (content) => {
   return response.data;
 };
 
-export default { getAllAnecdotes, createAnecdote };
+const updateVoteAnecdote = async (anecdote) => {
+  const request = axios.put(`${baseUrl}/${anecdote.id}`, {
+    ...anecdote,
+    votes: anecdote.votes + 1,
+  });
+  return request.then((response) => response.data);
+};
+
+export default { getAllAnecdotes, createAnecdote, updateVoteAnecdote };
