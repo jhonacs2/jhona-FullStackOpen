@@ -1,9 +1,9 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
 import { setNotification } from '../reducers/notificationReducer';
 
-export const AnecdoteForm = (props) => {
+const AnecdoteForm = (props) => {
   const dispatch = useDispatch();
 
   const addNote = async (event) => {
@@ -27,3 +27,6 @@ export const AnecdoteForm = (props) => {
     </div>
   );
 };
+const connectedAnecdotes = connect(null, { createAnecdote })(AnecdoteForm);
+
+export default connectedAnecdotes;

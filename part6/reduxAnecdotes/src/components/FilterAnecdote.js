@@ -1,13 +1,13 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { setInput } from '../reducers/filterReducer';
 
-export const FilterAnecdote = () => {
-  const filter = useSelector((state) => state.filter);
-  const dispatch = useDispatch();
+const FilterAnecdote = (props) => {
+  const filter = props.filter;
+
   const handleChange = (event) => {
     const content = event.target.value;
-    dispatch(setInput(content));
+    props.setInput(content);
   };
   const style = {
     marginBottom: 10,
@@ -19,3 +19,19 @@ export const FilterAnecdote = () => {
     </div>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    filter: state.filter,
+  };
+};
+
+const mapDispatchToProps = {
+  setInput,
+};
+
+const connectedAnecdotes = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FilterAnecdote);
+export default connectedAnecdotes;

@@ -1,3 +1,5 @@
+let identificador;
+
 const notiReducer = (state = '', action) => {
   switch (action.type) {
     case 'ADD_NOTI': {
@@ -13,11 +15,12 @@ const notiReducer = (state = '', action) => {
 
 export const setNotification = (notification, time) => {
   return async (dispatch) => {
+    clearTimeout(identificador);
     dispatch({
       type: 'ADD_NOTI',
       notification,
     });
-    setTimeout(() => {
+    identificador = setTimeout(() => {
       dispatch(hideNotification());
     }, time * 1000);
   };
