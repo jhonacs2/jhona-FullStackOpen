@@ -6,11 +6,15 @@ import blogService from './services/blogs';
 import { CreateForm } from './components/CreateForm';
 import { Notification } from './components/Notification';
 import { Toggable } from './components/Toggable';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserLogin } from './reducers/userReducer';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const dispatch = useDispatch();
 
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.user);
+  const [blogs, setBlogs] = useState([]);
+  // const [user, setUser] = useState(null);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
@@ -30,7 +34,8 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       blogService.setToken(user.token);
-      setUser(user);
+      dispatch(setUserLogin(user));
+      // setUser(user);
       // noteService.setToken(user.token);
     }
   }, []);
@@ -45,7 +50,7 @@ const App = () => {
 
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user));
       blogService.setToken(user.token);
-      setUser(user);
+      dispatch(setUserLogin(user));
       setUserName('');
       setPassword('');
       setNotificationMsg('Welcome');
