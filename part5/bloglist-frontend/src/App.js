@@ -20,7 +20,6 @@ const App = () => {
 
   const user = useSelector((state) => state.user);
   const blogs = useSelector((state) => state.blogs);
-  // const [blogs, setBlogs] = useState([]);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
@@ -33,9 +32,9 @@ const App = () => {
     }
     inittheBlogs();
   }, [dispatch]);
-  // const highToLower = blogs.sort((a, b) => {
-  //   return b.likes - a.likes;
-  // });
+  const highToLower = blogs.sort((a, b) => {
+    return b.likes - a.likes;
+  });
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
@@ -71,8 +70,7 @@ const App = () => {
   const addBlog = (newBlog) => {
     createFormRef.current.toggleVisibility();
     dispatch(addNewBlog(newBlog));
-    // blogService.createBlog(newBlog).then((returnedBlog) => {
-    //   setBlogs(blogs.concat(returnedBlog));
+
     //   setNotificationMsg(`The Blog ${returnedBlog.title} has been added `);
 
     //   setTimeout(() => {
@@ -83,19 +81,11 @@ const App = () => {
 
   const updateLike = (id, newLike) => {
     dispatch(updateLikeBlog(id, newLike));
-    // blogService.likeBlog(id, { likes: newLike }).then((blogReturned) => {
-    //   setBlogs(
-    //     blogs.map((blog) => (blog.id !== id ? blog : blogReturned.newBlog))
-    //   );
-    // });
   };
 
   const userDeleteBlog = (id) => {
     dispatch(deletePost(id));
-    // blogService.deleteBlog(id).then((returnedBlog) => {
-    //   console.log(returnedBlog);
-    //   setBlogs(blogs.filter((blog) => blog.id !== id));
-    // });
+    // insertar notificacion
   };
 
   if (user === null) {
@@ -125,7 +115,7 @@ const App = () => {
       </Toggable>
       <h2>Blogs</h2>
       create
-      {blogs.map((blog) => (
+      {highToLower.map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}

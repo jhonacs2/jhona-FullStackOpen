@@ -3,14 +3,15 @@ import blogService from '../services/blogs';
 const blogReducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_BLOG':
-      console.log(action.data);
       return action.data;
     case 'ADD_BLOG':
-      return [...state, action.data];
+      return state.concat(action.data);
     case 'UPDATE_LIKE':
-      return state;
+      return state.map((blog) =>
+        blog.id !== action.data.newBlog.id ? blog : action.data.newBlog
+      );
     case 'DELETE_POST':
-      return state;
+      return state.filter((blog) => blog.id !== action.data.id);
     default:
       return state;
   }
@@ -26,27 +27,33 @@ export const initBlogs = () => {
   };
 };
 
-export const addNewBlog = async (newBlog) => {
-  const addingBlog = await blogService.createBlog(newBlog);
-  return {
-    type: 'INIT_BLOG',
-    data: addingBlog,
+export const addNewBlog = (newBlog) => {
+  return async (dispatch) => {
+    const addingBlog = await blogService.createBlog(newBlog);
+    dispatch({
+      type: 'ADD_BLOG',
+      data: addingBlog,
+    });
   };
 };
 
-export const updateLikeBlog = async (id, newLike) => {
-  const updatingLike = await blogService.likeBlog(id, { likes: newLike });
-  return {
-    type: 'UPDATE_LIKE',
-    data: updatingLike,
+export const updateLikeBlog = (id, newLike) => {
+  return async (dispatch) => {
+    const updatingLike = await blogService.likeBlog(id, { likes: newLike });
+    dispatch({
+      type: 'UPDATE_LIKE',
+      data: updatingLike,
+    });
   };
 };
 
-export const deletePost = async (id) => {
-  const deletingPost = await blogService.deleteBlog(id);
-  return {
-    type: 'DELETE_POST',
-    data: deletingPost,
+export const deletePost = (id) => {
+  return async (dispatch) => {
+    const deletingPost = await blogService.deleteBlog(id);
+    dispatch({
+      type: 'DELETE_POST',
+      data: deletingPost,
+    });
   };
 };
 
