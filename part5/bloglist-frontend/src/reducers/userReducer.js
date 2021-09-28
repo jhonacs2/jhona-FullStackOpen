@@ -1,7 +1,6 @@
 const userReducer = (state = null, action) => {
   switch (action.type) {
     case 'LOGIN_USER':
-      console.log('el usuario es ', action.data);
       return action.user;
 
     default:

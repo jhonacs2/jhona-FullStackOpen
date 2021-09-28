@@ -8,26 +8,34 @@ import { Notification } from './components/Notification';
 import { Toggable } from './components/Toggable';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserLogin } from './reducers/userReducer';
+import {
+  addNewBlog,
+  deletePost,
+  initBlogs,
+  updateLikeBlog,
+} from './reducers/blogReducer';
 
 const App = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
-  const [blogs, setBlogs] = useState([]);
-  // const [user, setUser] = useState(null);
+  const blogs = useSelector((state) => state.blogs);
+  // const [blogs, setBlogs] = useState([]);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
   const [notificationMsg, setNotificationMsg] = useState(null);
 
   const createFormRef = useRef();
-
-  const highToLower = blogs.sort((a, b) => {
-    return b.likes - a.likes;
-  });
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    function inittheBlogs() {
+      dispatch(initBlogs());
+    }
+    inittheBlogs();
+  }, [dispatch]);
+  // const highToLower = blogs.sort((a, b) => {
+  //   return b.likes - a.likes;
+  // });
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
@@ -35,10 +43,8 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON);
       blogService.setToken(user.token);
       dispatch(setUserLogin(user));
-      // setUser(user);
-      // noteService.setToken(user.token);
     }
-  }, []);
+  }, [dispatch]);
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -64,29 +70,32 @@ const App = () => {
 
   const addBlog = (newBlog) => {
     createFormRef.current.toggleVisibility();
-    blogService.createBlog(newBlog).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog));
-      setNotificationMsg(`The Blog ${returnedBlog.title} has been added `);
+    dispatch(addNewBlog(newBlog));
+    // blogService.createBlog(newBlog).then((returnedBlog) => {
+    //   setBlogs(blogs.concat(returnedBlog));
+    //   setNotificationMsg(`The Blog ${returnedBlog.title} has been added `);
 
-      setTimeout(() => {
-        setNotificationMsg(null);
-      }, 5000);
-    });
+    //   setTimeout(() => {
+    //     setNotificationMsg(null);
+    //   }, 5000);
+    // });
   };
 
   const updateLike = (id, newLike) => {
-    blogService.likeBlog(id, { likes: newLike }).then((blogReturned) => {
-      setBlogs(
-        blogs.map((blog) => (blog.id !== id ? blog : blogReturned.newBlog))
-      );
-    });
+    dispatch(updateLikeBlog(id, newLike));
+    // blogService.likeBlog(id, { likes: newLike }).then((blogReturned) => {
+    //   setBlogs(
+    //     blogs.map((blog) => (blog.id !== id ? blog : blogReturned.newBlog))
+    //   );
+    // });
   };
 
   const userDeleteBlog = (id) => {
-    blogService.deleteBlog(id).then((returnedBlog) => {
-      console.log(returnedBlog);
-      setBlogs(blogs.filter((blog) => blog.id !== id));
-    });
+    dispatch(deletePost(id));
+    // blogService.deleteBlog(id).then((returnedBlog) => {
+    //   console.log(returnedBlog);
+    //   setBlogs(blogs.filter((blog) => blog.id !== id));
+    // });
   };
 
   if (user === null) {
@@ -116,7 +125,7 @@ const App = () => {
       </Toggable>
       <h2>Blogs</h2>
       create
-      {highToLower.map((blog) => (
+      {blogs.map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
