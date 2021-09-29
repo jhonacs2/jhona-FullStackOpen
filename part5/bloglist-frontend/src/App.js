@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Blog } from './components/Blog';
 import { LoginForm } from './components/LoginForm';
-import loginService from './services/login';
 import blogService from './services/blogs';
 import { CreateForm } from './components/CreateForm';
 import { Notification } from './components/Notification';
@@ -14,16 +13,13 @@ import {
   initBlogs,
   updateLikeBlog,
 } from './reducers/blogReducer';
+import { setNotification } from './reducers/notificationReducer';
 
 const App = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
   const blogs = useSelector((state) => state.blogs);
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [notificationMsg, setNotificationMsg] = useState(null);
 
   const createFormRef = useRef();
   useEffect(() => {
@@ -32,6 +28,7 @@ const App = () => {
     }
     inittheBlogs();
   }, [dispatch]);
+
   const highToLower = blogs.sort((a, b) => {
     return b.likes - a.likes;
   });
@@ -44,39 +41,12 @@ const App = () => {
       dispatch(setUserLogin(user));
     }
   }, [dispatch]);
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user));
-      blogService.setToken(user.token);
-      dispatch(setUserLogin(user));
-      setUserName('');
-      setPassword('');
-      setNotificationMsg('Welcome');
-    } catch (error) {
-      setNotificationMsg('username or password incorrect');
-    }
-    setTimeout(() => {
-      setNotificationMsg(null);
-    }, 5000);
-  };
 
   const addBlog = (newBlog) => {
     createFormRef.current.toggleVisibility();
     dispatch(addNewBlog(newBlog));
-
-    //   setNotificationMsg(`The Blog ${returnedBlog.title} has been added `);
-
-    //   setTimeout(() => {
-    //     setNotificationMsg(null);
-    //   }, 5000);
-    // });
+    console.log(newBlog);
+    dispatch(setNotification(`The Blog ${newBlog.title} has been added `, 5));
   };
 
   const updateLike = (id, newLike) => {
@@ -85,22 +55,16 @@ const App = () => {
 
   const userDeleteBlog = (id) => {
     dispatch(deletePost(id));
-    // insertar notificacion
+    dispatch(setNotification(`The Blog has been deleted `, 5));
   };
 
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Notification message={notificationMsg} />
+        <Notification />
         <Toggable buttonLabel='Login'>
-          <LoginForm
-            username={username}
-            password={password}
-            setUserName={setUserName}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-          />
+          <LoginForm />
         </Toggable>
       </div>
     );
@@ -109,7 +73,7 @@ const App = () => {
   return (
     <div>
       {user && <h1>Welcome {user.name}</h1>}
-      <Notification message={notificationMsg} />
+      <Notification />
       <Toggable buttonLabel='Create new blog' ref={createFormRef}>
         <CreateForm addBlog={addBlog} />
       </Toggable>
