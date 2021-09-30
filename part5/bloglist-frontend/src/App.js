@@ -13,7 +13,18 @@ import {
   initBlogs,
   updateLikeBlog,
 } from './reducers/blogReducer';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom';
 import { setNotification } from './reducers/notificationReducer';
+import { Home } from './components/Home';
+import { HolaMundo } from './components/HolaMundo';
+import userIdServices from './services/user';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -24,6 +35,7 @@ const App = () => {
   const createFormRef = useRef();
   useEffect(() => {
     function inittheBlogs() {
+      userIdServices.getAllUsers().then((users) => console.log(users));
       dispatch(initBlogs());
     }
     inittheBlogs();
@@ -58,21 +70,40 @@ const App = () => {
     dispatch(setNotification(`The Blog has been deleted `, 5));
   };
 
-  if (user === null) {
-    return (
-      <div>
-        <h2>Log in to application</h2>
-        <Notification />
-        <Toggable buttonLabel='Login'>
-          <LoginForm />
-        </Toggable>
-      </div>
-    );
-  }
+  // if (user === null) {
+  //   return (
+  //     <div>
+  //       <h2>Log in to application</h2>
+  //       <Notification />
+  //       <Toggable buttonLabel='Login'>
+  //         <LoginForm />
+  //       </Toggable>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>
-      {user && <h1>Welcome {user.name}</h1>}
+      <Router>
+        <div>
+          {/* <Link to='/'>Home</Link> */}
+          {/* render header links if user is not null */}
+          {user && (
+            <>
+              <Link to='/'>Home</Link>
+              <Link to='/createBlog'> Create blog</Link>
+            </>
+          )}
+
+          <Switch>
+            <Route path='/createBlog'>
+              <HolaMundo />
+            </Route>
+            <Route path='/'>{user ? <Home /> : <LoginForm />}</Route>
+          </Switch>
+        </div>
+      </Router>
+      {/* {user && <h1>Welcome {user.name}</h1>}
       <Notification />
       <Toggable buttonLabel='Create new blog' ref={createFormRef}>
         <CreateForm addBlog={addBlog} />
@@ -86,7 +117,7 @@ const App = () => {
           updateLike={updateLike}
           userDeleteBlog={userDeleteBlog}
         />
-      ))}
+      ))} */}
     </div>
   );
 };
