@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { Blog } from './components/Blog';
 import { LoginForm } from './components/LoginForm';
 import blogService from './services/blogs';
 import { CreateForm } from './components/CreateForm';
 import { Notification } from './components/Notification';
-import { Toggable } from './components/Toggable';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserLogin } from './reducers/userReducer';
 import {
@@ -13,26 +11,18 @@ import {
   initBlogs,
   updateLikeBlog,
 } from './reducers/blogReducer';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useHistory,
-} from 'react-router-dom';
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import { setNotification } from './reducers/notificationReducer';
 import { Home } from './components/Home';
-import { HolaMundo } from './components/HolaMundo';
 import userIdServices from './services/user';
+import { ViewBlogs } from './components/ViewBlogs';
+import { ViewBlog } from './components/ViewBlog';
 
 const App = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
   const blogs = useSelector((state) => state.blogs);
-
-  const createFormRef = useRef();
   useEffect(() => {
     function inittheBlogs() {
       userIdServices.getAllUsers().then((users) => console.log(users));
@@ -55,7 +45,6 @@ const App = () => {
   }, [dispatch]);
 
   const addBlog = (newBlog) => {
-    createFormRef.current.toggleVisibility();
     dispatch(addNewBlog(newBlog));
     console.log(newBlog);
     dispatch(setNotification(`The Blog ${newBlog.title} has been added `, 5));
@@ -69,55 +58,32 @@ const App = () => {
     dispatch(deletePost(id));
     dispatch(setNotification(`The Blog has been deleted `, 5));
   };
-
-  // if (user === null) {
-  //   return (
-  //     <div>
-  //       <h2>Log in to application</h2>
-  //       <Notification />
-  //       <Toggable buttonLabel='Login'>
-  //         <LoginForm />
-  //       </Toggable>
-  //     </div>
-  //   );
-  // }
-
+  const matchUserId = useRouteMatch('/blogs/:id');
+  const matchBlogId = useRouteMatch('/viewBlog/:id');
   return (
     <div>
-      <Router>
-        <div>
-          {/* <Link to='/'>Home</Link> */}
-          {/* render header links if user is not null */}
-          {user && (
-            <>
-              <Link to='/'>Home</Link>
-              <Link to='/createBlog'> Create blog</Link>
-            </>
-          )}
+      <div>
+        {/* render header links if user is not null */}
+        {user && (
+          <>
+            <Link to='/'>Home</Link>
+            <Link to='/createBlog'> Create blog</Link>
+          </>
+        )}
 
-          <Switch>
-            <Route path='/createBlog'>
-              <HolaMundo />
-            </Route>
-            <Route path='/'>{user ? <Home /> : <LoginForm />}</Route>
-          </Switch>
-        </div>
-      </Router>
-      {/* {user && <h1>Welcome {user.name}</h1>}
-      <Notification />
-      <Toggable buttonLabel='Create new blog' ref={createFormRef}>
-        <CreateForm addBlog={addBlog} />
-      </Toggable>
-      <h2>Blogs</h2>
-      create
-      {highToLower.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          updateLike={updateLike}
-          userDeleteBlog={userDeleteBlog}
-        />
-      ))} */}
+        <Switch>
+          <Route path='/blogs/:id'>
+            <ViewBlogs userId={matchUserId} />
+          </Route>
+          <Route path='/viewBlog/:id'>
+            <ViewBlog blogId={matchBlogId} />
+          </Route>
+          <Route path='/createBlog'>
+            <CreateForm addBlog={addBlog} />
+          </Route>
+          <Route path='/'>{user ? <Home /> : <LoginForm />}</Route>
+        </Switch>
+      </div>
     </div>
   );
 };

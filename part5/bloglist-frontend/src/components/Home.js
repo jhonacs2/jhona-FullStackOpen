@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useDispatch } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import userService from '../services/user';
 
 export const Home = () => {
-  // const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
   useEffect(() => {
     userService.getAllUsers().then((users) => setUsers(users));
@@ -12,11 +11,24 @@ export const Home = () => {
   return (
     <div>
       <h2>Users</h2>
-      <ul>
+      <table className='table'>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Blogs Created</th>
+          </tr>
+        </thead>
         {users.map((user) => (
-          <li>{user.username}</li>
+          <tbody key={user.id}>
+            <tr>
+              <td>
+                <Link to={`/blogs/${user.id}`}>{user.username}</Link>
+              </td>
+              <td>{user.blogs.length}</td>
+            </tr>
+          </tbody>
         ))}
-      </ul>
+      </table>
     </div>
   );
 };
