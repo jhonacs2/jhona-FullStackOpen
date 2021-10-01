@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import userService from '../services/user';
 
-export const Home = () => {
+const Home = () => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     userService.getAllUsers().then((users) => setUsers(users));
   }, []);
+
   // list of the users
   return (
     <div>
@@ -32,3 +33,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default React.memo(Home);

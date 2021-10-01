@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { LoginForm } from './components/LoginForm';
 import blogService from './services/blogs';
 import { CreateForm } from './components/CreateForm';
@@ -13,27 +13,25 @@ import {
 } from './reducers/blogReducer';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import { setNotification } from './reducers/notificationReducer';
-import { Home } from './components/Home';
-import userIdServices from './services/user';
+import Home from './components/Home';
 import { ViewBlogs } from './components/ViewBlogs';
 import { ViewBlog } from './components/ViewBlog';
-
+import { useHistory } from 'react-router';
 const App = () => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const user = useSelector((state) => state.user);
-  const blogs = useSelector((state) => state.blogs);
+
   useEffect(() => {
     function inittheBlogs() {
-      userIdServices.getAllUsers().then((users) => console.log(users));
       dispatch(initBlogs());
     }
     inittheBlogs();
   }, [dispatch]);
 
-  const highToLower = blogs.sort((a, b) => {
-    return b.likes - a.likes;
-  });
+  // const highToLower = blogs.sort((a, b) => {
+  //   return b.likes - a.likes;
+  // });
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
@@ -46,7 +44,6 @@ const App = () => {
 
   const addBlog = (newBlog) => {
     dispatch(addNewBlog(newBlog));
-    console.log(newBlog);
     dispatch(setNotification(`The Blog ${newBlog.title} has been added `, 5));
   };
 
@@ -56,6 +53,7 @@ const App = () => {
 
   const userDeleteBlog = (id) => {
     dispatch(deletePost(id));
+    history.push('/');
     dispatch(setNotification(`The Blog has been deleted `, 5));
   };
   const matchUserId = useRouteMatch('/blogs/:id');
@@ -68,6 +66,16 @@ const App = () => {
           <>
             <Link to='/'>Home</Link>
             <Link to='/createBlog'> Create blog</Link>
+            {user && (
+              <button
+                onClick={(e) => {
+                  localStorage.removeItem('loggedBlogAppUser');
+                  window.location.reload();
+                }}
+              >
+                LogOut
+              </button>
+            )}
           </>
         )}
 
@@ -76,7 +84,11 @@ const App = () => {
             <ViewBlogs userId={matchUserId} />
           </Route>
           <Route path='/viewBlog/:id'>
-            <ViewBlog blogId={matchBlogId} />
+            <ViewBlog
+              blogId={matchBlogId}
+              updateLike={updateLike}
+              userDeleteBlog={userDeleteBlog}
+            />
           </Route>
           <Route path='/createBlog'>
             <CreateForm addBlog={addBlog} />

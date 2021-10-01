@@ -3,13 +3,10 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 export const ViewBlogs = ({ userId }) => {
-  //   console.log(userId.params.id);
-  //   console.log(state.blogs.user.id);
   const blogs = useSelector((state) =>
     state.blogs.filter((blog) => blog.user.id === userId.params.id)
   );
-  console.log(blogs);
-  //   console.log(blogs.map((blog) => console.log(blog)));
+
   return (
     <div>
       <ul>
