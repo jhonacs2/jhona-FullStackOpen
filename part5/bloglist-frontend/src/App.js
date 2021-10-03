@@ -6,6 +6,7 @@ import { Notification } from './components/Notification';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserLogin } from './reducers/userReducer';
 import {
+  addComment,
   addNewBlog,
   deletePost,
   initBlogs,
@@ -56,6 +57,10 @@ const App = () => {
     history.push('/');
     dispatch(setNotification(`The Blog has been deleted `, 5));
   };
+
+  const addCommentBlog = (id, comment) => {
+    dispatch(addComment(id, comment));
+  };
   const matchUserId = useRouteMatch('/blogs/:id');
   const matchBlogId = useRouteMatch('/viewBlog/:id');
   return (
@@ -88,6 +93,7 @@ const App = () => {
               blogId={matchBlogId}
               updateLike={updateLike}
               userDeleteBlog={userDeleteBlog}
+              addCommentBlog={addCommentBlog}
             />
           </Route>
           <Route path='/createBlog'>
