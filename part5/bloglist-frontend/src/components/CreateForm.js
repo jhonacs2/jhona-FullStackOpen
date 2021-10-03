@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Form, Button, Container } from 'react-bootstrap';
 const initialState = {
   title: '',
   author: '',
@@ -25,46 +26,43 @@ export const CreateForm = ({ addBlog }) => {
   };
 
   return (
-    <div>
-      {' '}
-      <form className='row' onSubmit={newBlog}>
-        <div className='col-md-3'>
-          <input
-            id='title'
+    <Container>
+      <Form onSubmit={newBlog}>
+        <Form.Group className='mb-3'>
+          <Form.Label>Title</Form.Label>
+          <Form.Control
             type='text'
             value={blogForm.title}
-            placeholder='Title'
-            className='form-control'
-            onChange={handleInputChange}
+            placeholder='Enter Title'
             name='title'
-          ></input>
-        </div>
-        <div className='col-md-3'>
-          <input
-            id='author'
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group className='mb-3'>
+          <Form.Label>Author</Form.Label>
+          <Form.Control
             type='text'
             value={blogForm.author}
-            placeholder='Author'
-            className='form-control'
-            onChange={handleInputChange}
+            placeholder='Enter Author'
             name='author'
-          ></input>
-        </div>
-        <div className='col-md-3'>
-          <input
-            id='url'
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+        <Form.Group className='mb-3'>
+          <Form.Label>URL</Form.Label>
+          <Form.Control
             type='text'
             value={blogForm.url}
-            placeholder='Url'
-            className='form-control'
-            onChange={handleInputChange}
+            placeholder='Enter URL'
             name='url'
-          ></input>
-        </div>
-        <button type='submit' className='btn btn-primary' id='sentForm'>
-          Enviar
-        </button>
-      </form>
-    </div>
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Button variant='primary' type='submit'>
+          Create Blog
+        </Button>
+      </Form>
+    </Container>
   );
 };

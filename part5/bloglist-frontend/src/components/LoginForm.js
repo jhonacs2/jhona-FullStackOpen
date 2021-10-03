@@ -5,6 +5,7 @@ import blogService from '../services/blogs';
 import { useDispatch } from 'react-redux';
 import { setUserLogin } from '../reducers/userReducer';
 import { setNotification } from '../reducers/notificationReducer';
+import { Container, Form, Button } from 'react-bootstrap';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
@@ -30,28 +31,37 @@ export const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          id='username'
-          type={username.type}
-          value={username.value}
-          name='username'
-          onChange={username.onChangue}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id='password'
-          type={password.type}
-          value={password.value}
-          name='password'
-          onChange={password.onChangue}
-        />
-      </div>
-      <button type='submit'>login</button>
-    </form>
+    <Container>
+      <Form onSubmit={handleLogin}>
+        <Form.Group className='mb-3' controlId='formBasicEmail'>
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type={username.type}
+            placeholder='Enter Username'
+            value={username.value}
+            onChange={username.onChangue}
+            name='username'
+          />
+          <Form.Text className='text-muted'>
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className='mb-3' controlId='formBasicPassword'>
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type={password.type}
+            value={password.value}
+            onChange={password.onChangue}
+            placeholder='Password'
+            name='password'
+          />
+        </Form.Group>
+
+        <Button variant='primary' type='submit'>
+          Submit
+        </Button>
+      </Form>
+    </Container>
   );
 };

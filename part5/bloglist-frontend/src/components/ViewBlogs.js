@@ -6,7 +6,6 @@ export const ViewBlogs = ({ userId }) => {
   const blogs = useSelector((state) =>
     state.blogs.filter((blog) => blog.user.id === userId.params.id)
   );
-
   return (
     <div>
       <ul>

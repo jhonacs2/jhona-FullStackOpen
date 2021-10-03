@@ -12,12 +12,15 @@ import {
   initBlogs,
   updateLikeBlog,
 } from './reducers/blogReducer';
-import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { setNotification } from './reducers/notificationReducer';
 import Home from './components/Home';
 import { ViewBlogs } from './components/ViewBlogs';
 import { ViewBlog } from './components/ViewBlog';
 import { useHistory } from 'react-router';
+import { MainNavBar } from './components/MainNavBar';
+import { Container } from 'react-bootstrap';
+
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -63,46 +66,30 @@ const App = () => {
   };
   const matchUserId = useRouteMatch('/blogs/:id');
   const matchBlogId = useRouteMatch('/viewBlog/:id');
+  // console.log(user.username);
   return (
-    <div>
-      <div>
-        {/* render header links if user is not null */}
-        {user && (
-          <>
-            <Link to='/'>Home</Link>
-            <Link to='/createBlog'> Create blog</Link>
-            {user && (
-              <button
-                onClick={(e) => {
-                  localStorage.removeItem('loggedBlogAppUser');
-                  window.location.reload();
-                }}
-              >
-                LogOut
-              </button>
-            )}
-          </>
-        )}
+    <Container>
+      {/* render header links if user is not null */}
+      {user && <MainNavBar />}
 
-        <Switch>
-          <Route path='/blogs/:id'>
-            <ViewBlogs userId={matchUserId} />
-          </Route>
-          <Route path='/viewBlog/:id'>
-            <ViewBlog
-              blogId={matchBlogId}
-              updateLike={updateLike}
-              userDeleteBlog={userDeleteBlog}
-              addCommentBlog={addCommentBlog}
-            />
-          </Route>
-          <Route path='/createBlog'>
-            <CreateForm addBlog={addBlog} />
-          </Route>
-          <Route path='/'>{user ? <Home /> : <LoginForm />}</Route>
-        </Switch>
-      </div>
-    </div>
+      <Switch>
+        <Route path='/viewBlog/:id'>
+          <ViewBlog
+            blogId={matchBlogId}
+            updateLike={updateLike}
+            userDeleteBlog={userDeleteBlog}
+            addCommentBlog={addCommentBlog}
+          />
+        </Route>
+        <Route path='/blogs/:id'>
+          <ViewBlogs userId={matchUserId} />
+        </Route>
+        <Route path='/createBlog'>
+          <CreateForm addBlog={addBlog} />
+        </Route>
+        <Route path='/'>{user ? <Home /> : <LoginForm />}</Route>
+      </Switch>
+    </Container>
   );
 };
 
